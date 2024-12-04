@@ -1,0 +1,93 @@
+[I 241130 11:58:40 smartapi:146] Subscribing to WebSocket ticks...
+[I 241130 11:58:40 smartapi:142] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
+[I 241130 12:00:28 smartapi:146] Subscribing to WebSocket ticks...
+[I 241130 12:00:29 smartapi:142] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
+[E 241130 13:05:14 smartapi:136] Historic API failed: 'SmartConnect' object has no attribute 'getSymbolName'
+    Traceback (most recent call last):
+      File "/workspaces/hello-world/smartapi.py", line 127, in <module>
+        symbol_info = smartApi.getSymbolName(historicParam["symboltoken"])
+                      ^^^^^^^^^^^^^^^^^^^^^^
+    AttributeError: 'SmartConnect' object has no attribute 'getSymbolName'
+[I 241130 13:05:15 smartapi:156] Subscribing to WebSocket ticks...
+[I 241130 13:05:15 smartapi:152] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
+[I 241130 13:14:46 smartapi:153] Subscribing to WebSocket ticks...
+[I 241130 13:14:46 smartapi:149] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
+[W 241130 13:16:58 smartWebSocketV2:319] Attempting to resubscribe/reconnect (Attempt 1)...
+[I 241130 13:17:12 smartapi:149] Subscribing to WebSocket ticks...
+[I 241130 13:17:13 smartapi:145] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
+[W 241130 13:18:14 smartWebSocketV2:319] Attempting to resubscribe/reconnect (Attempt 1)...
+[I 241130 13:18:25 smartapi:149] Subscribing to WebSocket ticks...
+[I 241130 13:18:25 smartapi:145] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
+[E 241130 13:18:31 smartapi:156] WebSocket error: Connection closed
+[W 241130 13:18:31 smartWebSocketV2:343] Connection closed due to max retry attempts reached.
+[E 241130 13:18:31 smartapi:156] WebSocket error: Connection closed
+[W 241130 13:18:31 smartWebSocketV2:343] Connection closed due to max retry attempts reached.
+[E 241130 13:18:31 smartapi:156] WebSocket error: Connection closed
+[W 241130 13:18:31 smartWebSocketV2:343] Connection closed due to max retry attempts reached.
+[I 241130 13:18:44 smartapi:149] Subscribing to WebSocket ticks...
+[I 241130 13:18:44 smartapi:145] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
+[W 241130 13:23:39 smartWebSocketV2:319] Attempting to resubscribe/reconnect (Attempt 1)...
+[E 241130 13:23:39 smartapi:156] WebSocket error: Connection closed
+[W 241130 13:23:39 smartWebSocketV2:343] Connection closed due to max retry attempts reached.
+[I 241130 13:23:55 smartapi:151] Subscribing to WebSocket ticks...
+[I 241130 13:23:56 smartapi:147] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
+[W 241130 13:36:50 smartWebSocketV2:319] Attempting to resubscribe/reconnect (Attempt 1)...
+[E 241130 13:36:56 smartapi:158] WebSocket error: Connection closed
+[W 241130 13:36:56 smartWebSocketV2:343] Connection closed due to max retry attempts reached.
+[E 241130 13:37:03 smartapi:132] Historic API failed: 'dict' object is not callable
+    Traceback (most recent call last):
+      File "/workspaces/hello-world/smartapi.py", line 129, in <module>
+        candledata.insert(0, 'Symbol', historicParam("symboltoken"))
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    TypeError: 'dict' object is not callable
+[I 241130 13:37:04 smartapi:152] Subscribing to WebSocket ticks...
+[I 241130 13:37:04 smartapi:148] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
+[W 241130 13:38:01 smartWebSocketV2:319] Attempting to resubscribe/reconnect (Attempt 1)...
+[E 241130 13:38:05 smartapi:159] WebSocket error: Connection closed
+[W 241130 13:38:05 smartWebSocketV2:343] Connection closed due to max retry attempts reached.
+[E 241130 13:38:12 smartapi:132] Historic API failed: 'dict' object is not callable
+    Traceback (most recent call last):
+      File "/workspaces/hello-world/smartapi.py", line 129, in <module>
+        candledata = candledata.insert(0, 'Symbol', historicParam("symboltoken"))
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    TypeError: 'dict' object is not callable
+[I 241130 13:38:13 smartapi:152] Subscribing to WebSocket ticks...
+[I 241130 13:38:13 smartapi:148] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
+[W 241130 13:38:54 smartWebSocketV2:319] Attempting to resubscribe/reconnect (Attempt 1)...
+[E 241130 13:38:56 smartapi:159] WebSocket error: Connection closed
+[W 241130 13:38:56 smartWebSocketV2:343] Connection closed due to max retry attempts reached.
+[E 241130 13:39:03 smartapi:132] Historic API failed: 'DataFrame' object is not callable
+    Traceback (most recent call last):
+      File "/workspaces/hello-world/smartapi.py", line 129, in <module>
+        candledata = candledata.insert(0, 'Symbol', candledata("symboltoken"))
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    TypeError: 'DataFrame' object is not callable
+[I 241130 13:39:04 smartapi:152] Subscribing to WebSocket ticks...
+[I 241130 13:39:04 smartapi:148] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
+[W 241130 13:41:29 smartWebSocketV2:319] Attempting to resubscribe/reconnect (Attempt 1)...
+[E 241130 13:41:30 smartapi:159] WebSocket error: Connection closed
+[W 241130 13:41:30 smartWebSocketV2:343] Connection closed due to max retry attempts reached.
+[E 241130 13:41:40 smartapi:132] Historic API failed: 'dict' object is not callable
+    Traceback (most recent call last):
+      File "/workspaces/hello-world/smartapi.py", line 125, in <module>
+        token = historicParam("symboltoken")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    TypeError: 'dict' object is not callable
+[I 241130 13:41:41 smartapi:152] Subscribing to WebSocket ticks...
+[I 241130 13:41:41 smartapi:148] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
+[W 241130 13:42:39 smartWebSocketV2:319] Attempting to resubscribe/reconnect (Attempt 1)...
+[E 241130 13:42:39 smartapi:159] WebSocket error: Connection closed
+[W 241130 13:42:39 smartWebSocketV2:343] Connection closed due to max retry attempts reached.
+[E 241130 13:42:46 smartapi:132] Historic API failed: 'dict' object has no attribute 'symboltoken'
+    Traceback (most recent call last):
+      File "/workspaces/hello-world/smartapi.py", line 125, in <module>
+        token = historicParam.symboltoken
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+    AttributeError: 'dict' object has no attribute 'symboltoken'
+[I 241130 13:42:47 smartapi:152] Subscribing to WebSocket ticks...
+[I 241130 13:42:47 smartapi:148] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
+[W 241130 13:43:26 smartWebSocketV2:319] Attempting to resubscribe/reconnect (Attempt 1)...
+[E 241130 13:43:26 smartapi:159] WebSocket error: Connection closed
+[W 241130 13:43:26 smartWebSocketV2:343] Connection closed due to max retry attempts reached.
+[I 241130 13:43:37 smartapi:151] Subscribing to WebSocket ticks...
+[I 241130 13:43:37 smartapi:147] Ticks: {'subscription_mode': 1, 'exchange_type': 1, 'token': '26009', 'sequence_number': 18375059, 'exchange_timestamp': 1732876712000, 'last_traded_price': 5205560, 'subscription_mode_val': 'LTP'}
