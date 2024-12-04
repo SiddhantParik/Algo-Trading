@@ -4,10 +4,10 @@ from Indicators.zone_calculator import calculate_supply_demand_zones
 from Indicators.strategy_executor import execute_strategy
 from websocket_listener import websocket
 
-API_KEY = "vb7oO8jE"
-USERNAME = "S567270"
-PASSWORD = "1009"
-TOTP_TOKEN = "RA3WEVCXS6XT76G34MLFHGIXNE"
+API_KEY = "Your Api Key"
+USERNAME = "Your username"
+PASSWORD = "Your Password"
+TOTP_TOKEN = "Your Api TOTP Token"
 SYMBOL_TOKEN = "99926000"
 SYMBOL = "NIFTY"
 
