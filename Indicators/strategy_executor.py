@@ -52,12 +52,12 @@ def execute_strategy(api_instance, supply_zones, demand_zones, nifty_symbol, nif
             # Monitor buy order execution
             if buy_order_id:
                 order_status_response = api_instance.orderBook()
-                print(order_status_response)
+                # print(order_status_response)
                 
                 if isinstance(order_status_response, str):
                     order_status_response = json.loads(order_status_response)
 
-                if order_status_response.get('data') and order_status_response['data'][0].get('orderstatus') == "COMPLETE":
+                if nifty_price > avg_supply and order_status_response.get('data') and order_status_response['data'][0].get('orderstatus') == "COMPLETE":
                     print(f"Buy order executed. Order ID: {buy_order_id}")
 
                     # Place sell order once buy is executed
