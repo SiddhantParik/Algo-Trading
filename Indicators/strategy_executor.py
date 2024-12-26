@@ -37,7 +37,7 @@ def execute_strategy(api_instance, supply_zones, demand_zones, nifty_symbol, nif
                     "ordertype": "MARKET",
                     "producttype": "INTRADAY",
                     "duration": "DAY",
-                    "price": avg_demand,
+                    # "price": avg_demand,
                     "quantity": 25
                 }
                 
@@ -67,11 +67,11 @@ def execute_strategy(api_instance, supply_zones, demand_zones, nifty_symbol, nif
                         "symboltoken": option_token,
                         "transactiontype": "SELL",
                         "exchange": "NFO",
-                        "ordertype": "LIMIT",
+                        "ordertype": "MARKET",
                         "producttype": "INTRADAY",
                         "duration": "DAY",
-                        "price": avg_supply,
-                        "quantity": 1
+                        # "price": avg_supply,
+                        "quantity": 25
                     }
                     sell_order_id = api_instance.placeOrder(sell_params)
                     print(f"Sell order placed successfully. Order ID: {sell_order_id}")
