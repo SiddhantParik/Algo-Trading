@@ -2,7 +2,10 @@ import json
 import queue
 import time
 
-def execute_strategy(api_instance, supply_zones, demand_zones, nifty_symbol, nifty_token, price_queue, option_symbol="NIFTY26DEC2425000CE", option_token="71362"):
+
+
+
+def execute_strategy(api_instance, supply_zones, demand_zones, nifty_symbol, nifty_token, price_queue, option_symbol="NIFTY26DEC2423800CE", option_token="41687"):
     if not (supply_zones and demand_zones):
         print("No zones available for execution.")
         return
@@ -12,6 +15,7 @@ def execute_strategy(api_instance, supply_zones, demand_zones, nifty_symbol, nif
     
 
     buy_order_id = None
+    
 
     while True:
         
@@ -30,22 +34,30 @@ def execute_strategy(api_instance, supply_zones, demand_zones, nifty_symbol, nif
                     "symboltoken": option_token,
                     "transactiontype": "BUY",
                     "exchange": "NFO",
-                    "ordertype": "LIMIT",
+                    "ordertype": "MARKET",
                     "producttype": "INTRADAY",
                     "duration": "DAY",
                     "price": avg_demand,
-                    "quantity": 1
+                    "quantity": 25
                 }
+                
+                # print(data.decode("utf-8"))
                 buy_order_id = api_instance.placeOrder(buy_params)
                 print(f"Buy order placed successfully. Order ID: {buy_order_id}")
+                
+                # Debugging: List all attributes and methods of SmartConnect object
+                # print(dir(api_instance))
+
 
             # Monitor buy order execution
             if buy_order_id:
-                order_status_response = api_instance.getTranStatus({"orderid": buy_order_id})
+                order_status_response = api_instance.orderBook()
+                print(order_status_response)
+                
                 if isinstance(order_status_response, str):
                     order_status_response = json.loads(order_status_response)
 
-                if order_status_response.get("status") == "COMPLETE":
+                if order_status_response.get('data') and order_status_response['data'][0].get('orderstatus') == "COMPLETE":
                     print(f"Buy order executed. Order ID: {buy_order_id}")
 
                     # Place sell order once buy is executed
@@ -67,6 +79,11 @@ def execute_strategy(api_instance, supply_zones, demand_zones, nifty_symbol, nif
                     # Reset buy_order_id to stop further buy orders
                     buy_order_id = None
 
+                elif order_status_response.get('data') and order_status_response['data'][0].get('orderstatus') == 'rejected':
+                        print(f"Order rejected")
+                        break
+
+
 
             # Exit condition when Nifty crosses the supply zone
             if nifty_price > avg_supply:
@@ -78,4 +95,4 @@ def execute_strategy(api_instance, supply_zones, demand_zones, nifty_symbol, nif
         except Exception as e:
             print(f"Error in strategy execution: {e}")
 
-        time.sleep(0)  # Reduce sleep time for more frequent checks
+        time.sleep(1)  # Reduce sleep time for more frequent checks

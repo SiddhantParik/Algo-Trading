@@ -22,9 +22,9 @@ def connect_to_smart_api(api_key, username, password, totp_token):
     except Exception as e:
         raise Exception(f"API connection failed: {e}")
 
-def fetch_candle_data(api_instance, token, interval="FIVE_MINUTE", days=1):
+def fetch_candle_data(api_instance, token, interval="FIVE_MINUTE", days=0):
     current_date = datetime.now()
-    to_date = current_date.replace(hour=15, minute=30, second=0, microsecond=0)
+    to_date = current_date.replace(hour=10, minute=0, second=0, microsecond=0)
     from_date = (current_date - timedelta(days=days)).replace(hour=9, minute=0, second=0, microsecond=0)
 
     historic_params = {
