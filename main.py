@@ -9,10 +9,10 @@ from Indicators.MACD.MACDExecution import execute_strategy
 
 
 
-API_KEY = "A1octAeU"
-USERNAME = "D117603"
-PASSWORD = "2375"
-TOTP_TOKEN = "R33AUPIMLMJNCCPW2B3AD7WTRU"
+API_KEY = "Your_API_Key"
+USERNAME = "Your_Username"
+PASSWORD = "Your_Login_Pin"
+TOTP_TOKEN = "Your_TOTP_TOKEN"
 SYMBOL_TOKEN = "99926000"
 SYMBOL = "NIFTY"
 
