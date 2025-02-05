@@ -4,71 +4,109 @@ import pandas as pd
 from api_handler import fetch_candle_data
 
 
-
-def calculate_macd(data, short_window=6, long_window=12, signal_window=9):
+def calculate_macd(data, short_window, long_window, signal_window=9):
+    """
+    Calculate MACD, Signal line, and Histogram with proper data validation.
+    """
+    # Check if we have enough data
+    if len(data) < long_window:
+        raise ValueError("Insufficient data for MACD calculation.")
     
-    """
-    Calculate MACD, Signal line, and Histogram.
-    """
+    # Ensure 'close' column is numeric
+    data['close'] = pd.to_numeric(data['close'], errors='coerce')
+
+    # Calculate ShortEMA and LongEMA
     data['ShortEMA'] = data['close'].ewm(span=short_window, adjust=False).mean()
     data['LongEMA'] = data['close'].ewm(span=long_window, adjust=False).mean()
+    
+    # Calculate MACD and Signal
     data['MACD'] = data['ShortEMA'] - data['LongEMA']
     data['Signal'] = data['MACD'].ewm(span=signal_window, adjust=False).mean()
-    data['Histogram'] = data['MACD'] - data['Signal']
-     
-  
-    return data
-
+    
+    # Optional: Round the values for better alignment with the expected output
+    data['ShortEMA'] = data['ShortEMA'].round(2)
+    data['LongEMA'] = data['LongEMA'].round(2)
+    data['MACD'] = data['MACD'].round(2)
+    data['Signal'] = data['Signal'].round(2)
+    
+    # # Debugging output: Check the last few rows of the data
+    # print("MACD Calculation:")
+    # print(data[['datetime', 'close', 'ShortEMA', 'LongEMA', 'MACD', 'Signal']].tail())
+    
+    return {
+        "MACD": data['MACD'].iloc[-1],
+        "Signal": data['Signal'].iloc[-1],
+        "ShortEMA": data['ShortEMA'].iloc[-1],
+        "LongEMA": data['LongEMA'].iloc[-1]
+    }
 
 # Global DataFrame to hold the live candle data
 live_candle_data = pd.DataFrame(columns=['datetime', 'open', 'high', 'low', 'close', 'volume'])
 # Queue to pass data between threads
 price_queue = queue.Queue()
 
-def process_live_data(api_instance, token):
+def process_live_data(api_instance, token, interval, stop_event, Exchange, gui_app):
     """
     Fetch live candlestick data and queue it for processing.
+    The function will stop gracefully if the stop_event is set.
+    If an error occurs, updates the GUI status label to 'Stopped'.
     """
-    data_generator = fetch_candle_data(api_instance, token)
+    try:
+        data_generator = fetch_candle_data(api_instance, token, interval, Exchange, gui_app)
+        
 
-    for candle_data in data_generator:
-        if not candle_data.empty:
-            # Put new data into the price queue for processing
-            price_queue.put(candle_data)
+        for candle_data in data_generator:
+            if stop_event.is_set():
+                gui_app.log_signal.emit("Stopping live data processing...")
+                gui_app.status_label.setText("Status: Stopped")
+                break  # Exit the loop if the stop_event is set
 
-def MACD():
+            if not candle_data.empty:
+                # Put new data into the price queue for processing
+                price_queue.put(candle_data)
+
+            # Optionally, add a small sleep to prevent CPU overuse
+            time.sleep(0.1)
+
+    except Exception as e:
+        gui_app.log_signal.emit(f"Error occurred: {e}")
+        gui_app.status_label.setText("Status: Stopped")  # Update GUI label
+        raise  # Optionally re-raise the exception
+
+
+def MACD(short_window, long_window, gui_app):
     """
     Continuously update the DataFrame with new data and calculate MACD.
+    If an error occurs, updates the GUI status label to 'Stopped'.
     """
     global live_candle_data
-    global data 
-    while True:
-        if not price_queue.empty():
-            # Get the latest data from the queue
-            candle_data = price_queue.get()
+    global data
+    try:
+        while True:
+            if not price_queue.empty():
+                # Get the latest data from the queue
+                candle_data = price_queue.get()
 
-            # Update the global DataFrame
-            live_candle_data = pd.concat([live_candle_data, candle_data]).drop_duplicates(subset=['datetime'], keep='last')
-            # print(f"Updated Data:\n{live_candle_data.tail(5)}")
+                # Check if `candle_data` is not empty or all-NA
+                if not candle_data.empty and not candle_data.isna().all().all():
+                    # Update the global DataFrame
+                    live_candle_data = (
+                        pd.concat([live_candle_data, candle_data])
+                        .drop_duplicates(subset=['datetime'], keep='last')
+                    )
 
-            # Calculate MACD for the updated DataFrame
-            data = calculate_macd(live_candle_data)
-            # print("Updated Data", data)
-            #   # Print the MACD and Signal values
-            # print("MACD values:")
-            # print(data['MACD'].tail(1))  # Print the last few MACD values for quick reference
-            # print("\nSignal values:")
-            # print(data['Signal'].tail(1))  # Print the last few Signal values for quick reference
+                    # Calculate MACD for the updated DataFrame
+                    data = calculate_macd(live_candle_data, short_window, long_window)
 
-            # Yield the latest MACD and Signal values
-            yield {
-                'MACD': data['MACD'].iloc[-1],  # Latest MACD value
-                'Signal': data['Signal'].iloc[-1]  # Latest Signal value
-            }
+                    # Yield the latest MACD and Signal values
+                    yield {
+                        'MACD': data['MACD'],  # Latest MACD value
+                        'Signal': data['Signal']  # Latest Signal value
+                    }
 
-        # Allow for processing at 1-second intervals
-        time.sleep(1)
-
-
-
-
+            # Allow for processing at 1-second intervals
+            time.sleep(1)
+    except Exception as e:
+        gui_app.log_signal.emit(f"Error in MACD calculation: {e}")
+        gui_app.status_label.setText("Status: Stopped")  # Update GUI label
+        raise  # Optionally re-raise the exception
