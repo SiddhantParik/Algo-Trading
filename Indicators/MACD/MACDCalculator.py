@@ -4,13 +4,13 @@ import pandas as pd
 from api_handler import fetch_candle_data
 
 
-def calculate_macd(data, short_window, long_window, signal_window=9):
+def calculate_macd(data, short_window, long_window, gui_app, signal_window=9):
     """
     Calculate MACD, Signal line, and Histogram with proper data validation.
     """
     # Check if we have enough data
-    if len(data) < long_window:
-        raise ValueError("Insufficient data for MACD calculation.")
+    # if len(data) < long_window:
+    #     raise ValueError("Insufficient data for MACD calculation.")
     
     # Ensure 'close' column is numeric
     data['close'] = pd.to_numeric(data['close'], errors='coerce')
@@ -22,20 +22,25 @@ def calculate_macd(data, short_window, long_window, signal_window=9):
     # Calculate MACD and Signal
     data['MACD'] = data['ShortEMA'] - data['LongEMA']
     data['Signal'] = data['MACD'].ewm(span=signal_window, adjust=False).mean()
+
+    # Calculate Histogram
+    data['Histogram'] = data['MACD'] - data['Signal']
     
     # Optional: Round the values for better alignment with the expected output
     data['ShortEMA'] = data['ShortEMA'].round(2)
     data['LongEMA'] = data['LongEMA'].round(2)
     data['MACD'] = data['MACD'].round(2)
     data['Signal'] = data['Signal'].round(2)
+    data['Histogram'] = data['Histogram'].round(2)
     
     # # Debugging output: Check the last few rows of the data
-    # print("MACD Calculation:")
-    # print(data[['datetime', 'close', 'ShortEMA', 'LongEMA', 'MACD', 'Signal']].tail())
+    # gui_app.log_signal.emit("MACD Calculation:")
+    # gui_app.log_signal.emit(data[['Histogram']].tail())
     
     return {
         "MACD": data['MACD'].iloc[-1],
         "Signal": data['Signal'].iloc[-1],
+        "Histogram": data['Histogram'].iloc[-1],
         "ShortEMA": data['ShortEMA'].iloc[-1],
         "LongEMA": data['LongEMA'].iloc[-1]
     }
@@ -43,6 +48,7 @@ def calculate_macd(data, short_window, long_window, signal_window=9):
 # Global DataFrame to hold the live candle data
 live_candle_data = pd.DataFrame(columns=['datetime', 'open', 'high', 'low', 'close', 'volume'])
 # Queue to pass data between threads
+
 price_queue = queue.Queue()
 
 def process_live_data(api_instance, token, interval, stop_event, Exchange, gui_app):
@@ -52,7 +58,7 @@ def process_live_data(api_instance, token, interval, stop_event, Exchange, gui_a
     If an error occurs, updates the GUI status label to 'Stopped'.
     """
     try:
-        data_generator = fetch_candle_data(api_instance, token, interval, Exchange, gui_app)
+        data_generator = fetch_candle_data(api_instance, token, interval, Exchange, gui_app, stop_event)
         
 
         for candle_data in data_generator:
@@ -96,12 +102,13 @@ def MACD(short_window, long_window, gui_app):
                     )
 
                     # Calculate MACD for the updated DataFrame
-                    data = calculate_macd(live_candle_data, short_window, long_window)
+                    data = calculate_macd(live_candle_data, short_window, long_window, gui_app)
 
                     # Yield the latest MACD and Signal values
                     yield {
                         'MACD': data['MACD'],  # Latest MACD value
-                        'Signal': data['Signal']  # Latest Signal value
+                        'Signal': data['Signal'],  # Latest Signal value
+                        'Histogram': data['Histogram']
                     }
 
             # Allow for processing at 1-second intervals

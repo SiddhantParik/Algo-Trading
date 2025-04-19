@@ -65,15 +65,32 @@ def connect_to_smart_api(api_key, username, password, totp_token):
 
 
 
-def fetch_candle_data(api_instance, token, interval, Exchange, gui_app,days=9):
+def fetch_candle_data(api_instance, token, interval, Exchange, gui_app, stop_event,days=9):
     """
     Fetch live candle data continuously at a specified interval.
     ="FIVE_MINUTE"
     """
-    while True:
+    interval_mapping = {
+        "ONE_MINUTE": 1,
+        "THREE_MINUTE": 3,
+        "FIVE_MINUTE": 5,
+        "TEN_MINUTE": 10,
+        "FIFTEEN_MINUTE": 15,
+        "THIRTY_MINUTE": 30,
+        "ONE_HOUR": 60,
+        "ONE_DAY": 1440
+    }
+
+    if interval not in interval_mapping:
+        gui_app.log_signal.emit(f"Invalid interval: {interval}")
+        return
+
+    candle_duration = interval_mapping[interval]  # Get interval duration in minutes
+
+    while not stop_event.is_set():
         try:
             current_date = datetime.now()
-            to_date = current_date.replace(hour=23, minute=30, second=0, microsecond=0)
+            to_date = current_date.replace(second=0, microsecond=0) - timedelta(minutes=candle_duration)
             from_date = (current_date - timedelta(days=days)).replace(hour=9, minute=0, second=0, microsecond=0)
 
             historic_params = {

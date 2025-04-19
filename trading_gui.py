@@ -1,4 +1,5 @@
 import json
+import subprocess
 import sys
 from threading import Event
 import threading
@@ -184,10 +185,10 @@ class AlgorithmApp(QWidget):
         self.long_window.setPlaceholderText("Enter Long Window Value...")
         self.long_window_label = QLabel("MACD Long Window")
 
-        #Entry Difference 
-        self.entry_diff = QLineEdit()
-        self.entry_diff.setPlaceholderText("Enter entry difference Value...")
-        self.entry_diff_label = QLabel("Entry Difference")
+        # #Entry Difference 
+        # self.entry_diff = QLineEdit()
+        # self.entry_diff.setPlaceholderText("Enter entry difference Value...")
+        # self.entry_diff_label = QLabel("Entry Difference")
 
         # Call Option Dropdown
         self.call_option_dropdown = QComboBox()
@@ -201,14 +202,14 @@ class AlgorithmApp(QWidget):
         self.put_option_dropdown.lineEdit().setPlaceholderText("Select Put Option...")
         self.put_option_label = QLabel("Put Option")
 
-        # Target Input
-        self.target_input_call = QLineEdit()
-        self.target_input_call.setPlaceholderText("Enter Target...")
-        self.target_label_call = QLabel("Target Call Option")
+        # # Target Input
+        # self.target_input_call = QLineEdit()
+        # self.target_input_call.setPlaceholderText("Enter Target...")
+        # self.target_label_call = QLabel("Target Call Option")
 
-        self.target_input_put = QLineEdit()
-        self.target_input_put.setPlaceholderText("Enter Target...")
-        self.target_label_put = QLabel("Target Put Option")
+        # self.target_input_put = QLineEdit()
+        # self.target_input_put.setPlaceholderText("Enter Target...")
+        # self.target_label_put = QLabel("Target Put Option")
 
         # Quantity Input
         self.quantity_input = QLineEdit()
@@ -233,6 +234,8 @@ class AlgorithmApp(QWidget):
         # Buttons
         self.start_button = QPushButton("Start")
         self.stop_button = QPushButton("Stop")
+        self.refresh_button = QPushButton("Refresh Data")
+        # self.refresh_button.clicked.connect(self.run_data_downloader)
 
         # Add widgets to form layout
         self.form_layout.addWidget(self.exchange_label, 0, 0)
@@ -256,10 +259,10 @@ class AlgorithmApp(QWidget):
         self.form_layout.addWidget(self.put_option_dropdown, 7, 1)
 
         
-        self.form_layout.addWidget(self.target_label_call, 8, 0)
-        self.form_layout.addWidget(self.target_input_call, 9, 0)
-        self.form_layout.addWidget(self.target_label_put, 8, 1)
-        self.form_layout.addWidget(self.target_input_put, 9, 1)
+        # self.form_layout.addWidget(self.target_label_call, 8, 0)
+        # self.form_layout.addWidget(self.target_input_call, 9, 0)
+        # self.form_layout.addWidget(self.target_label_put, 8, 1)
+        # self.form_layout.addWidget(self.target_input_put, 9, 1)
         
         self.form_layout.addWidget(self.quantity_label, 10, 0)
         self.form_layout.addWidget(self.quantity_input, 11, 0)
@@ -267,8 +270,8 @@ class AlgorithmApp(QWidget):
         self.form_layout.addWidget(self.transaction_type, 11, 1)
         
         self.form_layout.addWidget(self.lot_size_label, 12, 0)
-        self.form_layout.addWidget(self.entry_diff_label, 12, 1)
-        self.form_layout.addWidget(self.entry_diff, 13, 1)
+        # self.form_layout.addWidget(self.entry_diff_label, 12, 1)
+        # self.form_layout.addWidget(self.entry_diff, 13, 1)
 
         # Button layout
         button_layout = QHBoxLayout()
@@ -276,6 +279,9 @@ class AlgorithmApp(QWidget):
         button_layout.addWidget(self.stop_button)
         self.form_layout.addLayout(button_layout, 14, 0, 1, 2)
         self.form_layout.addWidget(self.status_label, 15, 0, 1, 2)
+        self.form_layout.addWidget(self.refresh_button, 16, 0, 1, 2)
+
+    
 
     def setup_console(self):
         self.console_output = QTextEdit(self)
@@ -419,9 +425,16 @@ class TabbedApplication(QMainWindow):
         self.tabs = QTabWidget()
         self.setCentralWidget(self.tabs)
 
+        self.setWindowTitle("Algo Trading App")
+
+        # Set the icon
+        self.setWindowIcon(QIcon('Algo_Trading.png'))  # Replace with your icon path
+
+        self.setGeometry(100, 100, 800, 600)  # Window size and position
+
         self.tab_consoles = {}  # Dictionary to store console redirection for each tab
 
-        for i in range(4):  # Create 3 tabs with AlgorithmApp instances
+        for i in range(3):  # Create 3 tabs with AlgorithmApp instances
             tab = AlgorithmApp(f"Algorithm {i+1}")
             self.tabs.addTab(tab, f"Algorithm {i+1}")
 
