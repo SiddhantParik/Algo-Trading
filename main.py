@@ -23,13 +23,13 @@ from PyQt6.QtWidgets import QApplication  # Import QApplication
 from PyQt6.QtGui import QIcon
 
 # API credentials
-API_KEY1 = "rYAoSM8D"
-API_KEY2 = "VsXImU9u"
-API_KEY3 = "t9mlQQbC"
-API_KEY4 = "4t986hse"
-USERNAME = "D117603"
-PASSWORD = "2375"
-TOTP_TOKEN = "R33AUPIMLMJNCCPW2B3AD7WTRU"
+API_KEY1 = "-----API_KEY1------"
+API_KEY2 = "-----API_KEY2------"
+API_KEY3 = "-----API_KEY3-----"
+API_KEY4 = "-----API_KEY4-----"
+USERNAME = "-----Username--------"
+PASSWORD = "------Account_PIN------"
+TOTP_TOKEN = "-----TOTP--------"
 
 # Global variables
 stop_event_dict = {}
